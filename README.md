@@ -1,4 +1,6 @@
-# Mind & Body Dashboard
+# Mind & Body Dashboard (prototype)
+
+![alt text](src/public/preview.png)
 
 A gym and fitness center management desktop application built with Next.js and Tauri.
 
@@ -32,6 +34,16 @@ Start the desktop app (Tauri):
 
 ```bash
 pnpm tauri dev
+```
+
+## Notes
+
+### Tiling window managers (Hyprland, i3, etc.)
+
+If the app renders as a black screen, disable GPU compositing:
+
+```bash
+WEBKIT_DISABLE_COMPOSITING_MODE=1 pnpm tauri dev
 ```
 
 ## Build
