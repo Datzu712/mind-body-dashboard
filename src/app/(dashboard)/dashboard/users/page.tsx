@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { DashboardHeader } from '@/src/features/dashboard/components/dashboard-header'
 import { PageHeader } from '@/src/shared/components/page-header'
 import { UsersTable } from '@/src/features/dashboard/users/components/users-table'
@@ -16,11 +16,16 @@ import {
 } from '@/components/ui/select'
 import { Card, CardContent } from '@/components/ui/card'
 import { Plus, Search, Filter } from 'lucide-react'
-import { mockUsers, type User } from '@/src/shared/lib/mock-data'
+import { type User } from '@/src/shared/lib/mock-data'
+import { getUsers } from '@/src/shared/lib/tauri-api'
 import { toast } from 'sonner'
 
 export default function UsersPage() {
-  const [users, setUsers] = useState<User[]>(mockUsers)
+  const [users, setUsers] = useState<User[]>([])
+
+  useEffect(() => {
+    getUsers().then(setUsers)
+  }, [])
   const [search, setSearch] = useState('')
   const [roleFilter, setRoleFilter] = useState<string>('all')
   const [statusFilter, setStatusFilter] = useState<string>('all')

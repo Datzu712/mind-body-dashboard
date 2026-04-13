@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { DashboardHeader } from '@/src/features/dashboard/components/dashboard-header'
 import { PageHeader } from '@/src/shared/components/page-header'
 import { KPICard } from '@/src/shared/components/kpi-card'
@@ -25,7 +25,8 @@ import {
 } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import { Download, Search, Calendar, ClipboardList, Filter } from 'lucide-react'
-import { mockAuditLogs, mockUsers } from '@/src/shared/lib/mock-data'
+import { mockAuditLogs, type User } from '@/src/shared/lib/mock-data'
+import { getUsers } from '@/src/shared/lib/tauri-api'
 import { toast } from 'sonner'
 
 const actionColors: Record<string, string> = {
@@ -38,8 +39,13 @@ const actionColors: Record<string, string> = {
 }
 
 export default function AuditPage() {
+  const [users, setUsers] = useState<User[]>([])
   const [search, setSearch] = useState('')
   const [userFilter, setUserFilter] = useState<string>('all')
+
+  useEffect(() => {
+    getUsers().then(setUsers)
+  }, [])
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
 
@@ -147,7 +153,7 @@ export default function AuditPage() {
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border">
                       <SelectItem value="all">Todos los usuarios</SelectItem>
-                      {mockUsers.map((user) => (
+                      {users.map((user) => (
                         <SelectItem key={user.id} value={user.id}>
                           {user.name}
                         </SelectItem>
